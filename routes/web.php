@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
+use App\Mail\ExpiredLinksSummary;
+use App\Models\User;
 
 Route::get('/', function () {
     return redirect()->route('links.index');
@@ -15,17 +17,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('profile', [ProfileController::class, 'index'])
         ->name('profile.index');
-
-    Route::patch('/profile/email', [
-        ProfileController::class,
-        'updateEmail'
-    ])->name('profile.email.update');
-
-    Route::patch('/profile/password', [
-        ProfileController::class,
-        'updatePassword'
-    ])->name('profile.password.update');
 });
+
+Route::get('/mailable/{user:id}', fn(User $user) => new ExpiredLinksSummary($user->shortUrls->toArray()));
 
 Route::get('{short_url:short_code}', RedirectController::class)
     ->name('redirect');

@@ -13,3 +13,18 @@ test('short url redirects', function () {
             'https://google.com'
         );
 });
+
+test('redirect increments visits and updated last_visited_at', function () {
+
+    $link = ShortUrl::factory()->create([
+        'short_code' => 'abc123',
+        'visits' => 0,
+        'last_visited_at' => null,
+    ]);
+
+    $this->get('/abc123');
+
+    expect($link->fresh()->visits)->toBe(1);
+
+    expect($link->fresh()->last_visited_at)->not->toBeNull();
+});

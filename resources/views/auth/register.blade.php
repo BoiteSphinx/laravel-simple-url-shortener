@@ -10,24 +10,6 @@
 
         <div class="mb-4">
             <label class="mb-1 block text-sm font-medium">
-                Nom complet
-            </label>
-
-            <input
-                type="text"
-                name="name"
-                value="{{ old('name') }}"
-                required
-                class="w-full rounded-lg border px-4 py-2"
-            >
-
-            @error('name')
-                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
-            <label class="mb-1 block text-sm font-medium">
                 Adresse email
             </label>
 

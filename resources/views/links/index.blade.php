@@ -2,6 +2,24 @@
 
 @section('content')
 
+@if(session('short_url'))
+    <div class="mb-6 rounded-lg bg-green-100 p-4">
+
+        <p class="font-semibold">
+            Votre URL courte :
+        </p>
+
+        <a
+            href="{{ session('short_url') }}"
+            target="_blank"
+            class="text-blue-600"
+        >
+            {{ session('short_url') }}
+        </a>
+
+    </div>
+@endif
+
 <div class="mb-6 flex items-center justify-between">
 
     <h1 class="text-3xl font-bold">
@@ -17,7 +35,7 @@
 
 </div>
 
-<div class="overflow-hidden rounded-xl bg-white shadow">
+<div class="mb-6 overflow-hidden rounded-xl bg-white shadow">
 
     <table class="w-full">
 
@@ -55,19 +73,32 @@
                         href="{{ $link->original_url }}"
                         target="_blank"
                         class="text-blue-600"
+                        title="{{ $link->original_url }}"
                     >
                         {{ Str::limit($link->original_url, 60) }}
                     </a>
                 </td>
 
                 <td class="text-center font-mono">
-                    <a
-                        href="{{ route('redirect', $link->short_code) }}"
-                        target="_blank"
-                        class="text-blue-600"
-                    >
-                        {{ $link->short_code }}
-                    </a>
+                    <div class="flex items-center justify-center gap-2">
+                        <a
+                            href="{{ url($link->short_code) }}"
+                            target="_blank"
+                            class="text-blue-600"
+                        >
+                            <code>
+                                {{ url($link->short_code) }}
+                            </code>
+                        </a>
+
+                        <button
+                            type="button"
+                            onclick="copyLink('{{ route('redirect', $link->short_code) }}', this)"
+                            class="rounded bg-slate-600 px-2 py-1 text-xs text-white"
+                        >
+                            Copier
+                        </button>
+                    </div>
                 </td>
 
                 <td class="text-center">
@@ -92,6 +123,7 @@
                         <form
                             method="POST"
                             action="{{ route('links.destroy', $link) }}"
+                            onsubmit="return confirm('Voulez-vous vraiment supprimer le lien {{ $link->short_code }} ?')"
                         >
                             @csrf
                             @method('DELETE')
@@ -125,8 +157,35 @@
 
 </div>
 
+@if ($links->hasPages())
 <div class="mt-6">
     {{ $links->links() }}
 </div>
+@endif
 
 @endsection
+
+<script>
+function copyLink(url, button)
+{
+    const textarea = document.createElement('textarea');
+
+    textarea.value = url;
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand('copy');
+
+    document.body.removeChild(textarea);
+
+    const originalText = button.innerText;
+
+    button.innerText = 'Copié ✓';
+
+    setTimeout(() => {
+        button.innerText = originalText;
+    }, 2000);
+}
+</script>

@@ -8,15 +8,16 @@ use App\Actions\Links\UpdateShortUrl;
 use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\ShortUrl;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LinkController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('links.index', [
             'links' => ShortUrl::query()
@@ -29,7 +30,7 @@ class LinkController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('links.create');
     }
@@ -37,7 +38,7 @@ class LinkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLinkRequest $request, CreateShortUrl $action)
+    public function store(StoreLinkRequest $request, CreateShortUrl $action): RedirectResponse
     {
         $link = $action->handle(
             Auth::user(),
@@ -53,7 +54,7 @@ class LinkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ShortUrl $link)
+    public function edit(ShortUrl $link): View
     {
         $this->authorize('update', $link);
 
@@ -65,7 +66,7 @@ class LinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLinkRequest $request, ShortUrl $link, UpdateShortUrl $action)
+    public function update(UpdateLinkRequest $request, ShortUrl $link, UpdateShortUrl $action): RedirectResponse
     {
         $this->authorize('update', $link);
 
@@ -80,7 +81,7 @@ class LinkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ShortUrl $link, DeleteShortUrl $action)
+    public function destroy(ShortUrl $link, DeleteShortUrl $action): RedirectResponse
     {
         $this->authorize('delete', $link);
 
