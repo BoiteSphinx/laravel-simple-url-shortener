@@ -21,37 +21,61 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prérequis
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* PHP >= 8.5
+* Node.js >= 22
+* SQLite / MySQL8
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Installation
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Clonage du projet:
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/BoiteSphinx/myanapro-url-shortener.git
 
-php artisan boost:install
+cd myanapro-url-shortener
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Installation des dépendances avec Composer et NPM:
 
-## Contributing
+```bash
+composer install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+npm install
 
-## Code of Conduct
+npm run build
+```
+Mise en place du fichier `.env`:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cp .env.example .env
 
-## Security Vulnerabilities
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Préparez la base de données et lancez les migrations:
+
+```bash
+touch database/database.sqlite
+
+php artisan migrate
+```
+
+Enfin, démarrer le serveur de développement:
+```bash
+php artisan serve
+```
+
+### Tests unitaires
+
+Pour lancer les tests unitaires:
+
+```bash
+php artisan test
+```
 
 ## License
 
